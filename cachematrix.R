@@ -1,17 +1,20 @@
-## 4/25/2014 first draft 
-## check push from local directory
+## Functions based on those outlined in  
+##     rdpeng/ProgrammingAssignment2/README.md
+
+## 4/25/2014 upgrade of functions in makeCacheMatrix 
+
 
 
 ## makeCacheMatrix defines four functions to 
 ## handle creation and caching of inverted matrices
 
-## get matrix creates matrix
+## get  returns function object 
 
-## set matrix caches matrix
+## set  
 
-## get inverted matrix retrieves inverted matrix from cache
+## getInverse  retrieves inverted matrix 
 
-## set inverted matrix calculates inverse of matrix and
+## setInverse  calculates inverse of matrix and
 ##     caches it
 
 
@@ -19,23 +22,22 @@
 makeCacheMatrix <- function(x = matrix()) {
       
       
-      mtx <- NULL
+      m <- NULL
       
-      setMatrix <- function(y) {
+      set <- function(y) {
             x <<- y
-            mtx <<- NULL
+            m <<- NULL
       }
-      getMatrix <- function() x
+      get <- function() x
       
-      setInvertedMtx <- function(mtx) mtx <<- matrix()
+      setInverse <- function(inverse) m <<- inverse
       
-      getInvertedMtx <- function() mtx
+      getInverse <- function() m
       
-      list(setMatrix = setMatrix,
-           getMatrix = getMatrix,
-           setInvertedMtx = setInvertedMtx,
-           getInvertedMtx = getInvertedMtx)
-
+      list(set = set, get = get,
+           setInverse = setInverse,
+           getInverse = getInverse)
+      
 }
 
 
@@ -49,17 +51,18 @@ cacheSolve <- function(x, ...) {
       
       ## check cache for the inverse of 'x'
       
-      mtx <- x$getInvertedMtx()
-      if(!is.null(mtx)) {
+      m <- x$getInverse()
+      if(!is.null(m)) {
             
-            return(mtx)
+            return(m)
       }
       
       ## if not found, get matrix and invert
       ## add inverted matrix to cache
+      ## return inverted matrix
       
-      data <- x$getMatrix()
-      mtx <- solve(data)
-      x$setInvertedMtx(mtx)
-      mtx
+      data <- x$get()
+      m <- solve(data, ...)
+      x$setInverse(m)
+      m
 }
